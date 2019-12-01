@@ -3,10 +3,7 @@
             [clojure.string :as string]))
 
 (defn task1-calc-fuel [mass]
-  (-> mass
-      (/ 3)
-      (int)
-      (- 2)))
+  (- (int (/ mass 3)) 2))
 
 (defn task2-calc-fuel [original-mass]
   (loop [mass original-mass total-mass 0]
