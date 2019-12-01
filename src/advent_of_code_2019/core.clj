@@ -1,4 +1,4 @@
-(ns advent-of-code-2019.core
+(ns advent-of-code-2019.day1
   (:require [clojure.java.io :as io]
             [clojure.string :as string]))
 
@@ -12,14 +12,14 @@
         total-mass
         (recur fuel (+ total-mass fuel))))))
 
-(defn day1 [task-fn]
+(defn apply-calc [task-fn]
     (->> (slurp (io/resource "day1.txt"))
          (string/split-lines)
          (map #(task-fn (Integer/parseInt %)))
          (reduce +)))
 
 (def task1
-  (day1 task1-calc-fuel))
+  (apply-calc task1-calc-fuel))
 
 (def task2
-  (day1 task2-calc-fuel))
+  (apply-calc task2-calc-fuel))
