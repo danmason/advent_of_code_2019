@@ -7,12 +7,15 @@
       (string/split-lines)
       (first)
       (string/split #",")
-      ((fn [ints] (mapv #(Integer/parseInt %) ints)))
-      (assoc 1 12)
-      (assoc 2 2)))
+      ((fn [ints] (mapv #(Integer/parseInt %) ints)))))
 
-(defn task1-process [intcode]
-  (loop [codes intcode pos 0]
+(defn- with-inputs [intcodes x y]
+  (-> intcodes
+   (assoc 1 x)
+   (assoc 2 y)))
+
+(defn process-intcodes [intcodes x y]
+  (loop [codes (with-inputs intcodes x y) pos 0]
     (let [op-set (take 4 (drop pos codes))]
       (case (first op-set)
         1 (recur (assoc codes (nth op-set 3) (+ (nth codes (nth op-set 1))
@@ -23,5 +26,15 @@
                  (+ pos 4))
         99 codes))))
 
-(def task1
-  (task1-process (read-file)))
+(defn task1 []
+  (let [intcodes (read-file)
+        processed-intcodes (process-intcodes intcodes 12 2)]
+    (first processed-intcodes)))
+
+(defn task2 []
+  (let [intcodes (read-file)]
+    (first (for [noun (range 100)
+                 verb (range 100)
+                 :when (= 19690720
+                          (first (process-intcodes intcodes noun verb)))]
+             (+ (* 100 noun) verb)))))
