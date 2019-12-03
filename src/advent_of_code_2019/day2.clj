@@ -4,10 +4,7 @@
 
 (defn read-file []
   (-> (slurp (io/resource "day2.txt"))
-      (string/split-lines)
-      (first)
-      (string/split #",")
-      ((fn [ints] (mapv #(Integer/parseInt %) ints)))))
+      (#(clojure.edn/read-string (str  "[" % "]")))))
 
 (defn process-intcodes [intcodes x y]
   (loop [codes (assoc intcodes 1 x 2 y)
@@ -22,12 +19,12 @@
                  (+ pos 4))
         99 codes))))
 
-(defn task1 []
+(def task1
   (let [intcodes (read-file)
         processed-intcodes (process-intcodes intcodes 12 2)]
     (first processed-intcodes)))
 
-(defn task2 []
+(def task2
   (let [intcodes (read-file)]
     (first (for [noun (range 100)
                  verb (range 100)
