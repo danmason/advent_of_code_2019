@@ -9,13 +9,9 @@
       (string/split #",")
       ((fn [ints] (mapv #(Integer/parseInt %) ints)))))
 
-(defn- with-inputs [intcodes x y]
-  (-> intcodes
-   (assoc 1 x)
-   (assoc 2 y)))
-
 (defn process-intcodes [intcodes x y]
-  (loop [codes (with-inputs intcodes x y) pos 0]
+  (loop [codes (assoc intcodes 1 x 2 y)
+         pos 0]
     (let [op-set (take 4 (drop pos codes))]
       (case (first op-set)
         1 (recur (assoc codes (nth op-set 3) (+ (nth codes (nth op-set 1))
